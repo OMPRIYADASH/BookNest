@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: booknest-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: booknest
+      POSTGRES_USER: booknest
+      POSTGRES_PASSWORD: booknest_dev_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - booknest_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  booknest_postgres_data:
