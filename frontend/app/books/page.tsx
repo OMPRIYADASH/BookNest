@@ -240,17 +240,24 @@ export default function BooksPage() {
   }
 
   function openEditForm(book: Book) {
-    setTitle(book.title);
-    setAuthor(book.author);
-    setStatus(book.status);
-    setTotalPages(String(book.total_pages));
-    setRating(
-      book.rating !== null ? String(book.rating) : ""
-    );
-    setNotes(book.notes || "");
-    setEditingBook(book);
-    setShowForm(true);
-  }
+  setTitle(book.title);
+  setAuthor(book.author);
+  setStatus(book.status);
+  setTotalPages(String(book.total_pages));
+  setRating(
+    book.rating !== null ? String(book.rating) : ""
+  );
+  setNotes(book.notes || "");
+  setEditingBook(book);
+  setShowForm(true);
+
+  setTimeout(() => {
+    document.getElementById("book-form")?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, 100);
+}
 
   function closeForm() {
     resetForm();
@@ -536,15 +543,16 @@ export default function BooksPage() {
   const filteredBooks = books;
 
   return (
-    <main className="min-h-screen bg-gray-100 px-6 py-8">
-      <div className="mx-auto max-w-5xl">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-lime-50 px-6 py-8">
+      <div className="w-full">
+        {/* Header */}
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-emerald-950">
               My Books
             </h1>
 
-            <p className="mt-1 text-gray-600">
+            <p className="mt-1 text-emerald-800/70">
               Manage your reading collection
             </p>
           </div>
@@ -552,24 +560,26 @@ export default function BooksPage() {
           <button
             type="button"
             onClick={showForm ? closeForm : openAddForm}
-            className="rounded-lg bg-black px-5 py-3 text-sm font-medium text-white"
+            className="rounded-lg bg-emerald-600 px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700"
           >
             {showForm ? "Cancel" : "Add Book"}
           </button>
         </div>
 
+        {/* Add / Edit Book */}
         {showForm && (
           <form
+            id="book-form"
             onSubmit={handleSaveBook}
-            className="mb-8 rounded-2xl bg-white p-6 shadow-sm"
+            className="mb-8 rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm"
           >
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-emerald-950">
               {editingBook ? "Edit Book" : "Add Book"}
             </h2>
 
             <div className="mt-6 grid gap-5 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-emerald-900">
                   Title
                 </label>
 
@@ -580,13 +590,13 @@ export default function BooksPage() {
                     setTitle(event.target.value)
                   }
                   required
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black outline-none focus:border-black"
+                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   placeholder="Book title"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-emerald-900">
                   Author
                 </label>
 
@@ -597,13 +607,13 @@ export default function BooksPage() {
                     setAuthor(event.target.value)
                   }
                   required
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black outline-none focus:border-black"
+                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   placeholder="Author name"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-emerald-900">
                   Status
                 </label>
 
@@ -612,7 +622,7 @@ export default function BooksPage() {
                   onChange={(event) =>
                     setStatus(event.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-black outline-none focus:border-black"
+                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 >
                   <option value="want_to_read">
                     Want to Read
@@ -629,7 +639,7 @@ export default function BooksPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-emerald-900">
                   Total Pages
                 </label>
 
@@ -641,13 +651,13 @@ export default function BooksPage() {
                   }
                   required
                   min="1"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black outline-none focus:border-black"
+                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   placeholder="e.g. 320"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-emerald-900">
                   Rating
                 </label>
 
@@ -656,7 +666,7 @@ export default function BooksPage() {
                   onChange={(event) =>
                     setRating(event.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-black outline-none focus:border-black"
+                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 >
                   <option value="">No rating</option>
                   <option value="1">1</option>
@@ -668,7 +678,7 @@ export default function BooksPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-emerald-900">
                   Notes
                 </label>
 
@@ -678,7 +688,7 @@ export default function BooksPage() {
                   onChange={(event) =>
                     setNotes(event.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black outline-none focus:border-black"
+                  className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   placeholder="Optional notes"
                 />
               </div>
@@ -688,7 +698,7 @@ export default function BooksPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="rounded-lg bg-black px-5 py-3 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg bg-emerald-600 px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {saving
                   ? "Saving..."
@@ -700,7 +710,7 @@ export default function BooksPage() {
               <button
                 type="button"
                 onClick={closeForm}
-                className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-medium text-gray-700"
+                className="rounded-lg border border-emerald-200 bg-white px-5 py-3 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50"
               >
                 Cancel
               </button>
@@ -708,10 +718,11 @@ export default function BooksPage() {
           </form>
         )}
 
-        <div className="mb-6 rounded-2xl bg-white p-5 shadow-sm">
+        {/* Search and Filters */}
+        <div className="mb-6 rounded-2xl border border-emerald-100 bg-white/95 p-5 shadow-sm">
           <div className="grid gap-4 md:grid-cols-3">
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-emerald-900">
                 Search
               </label>
 
@@ -722,13 +733,13 @@ export default function BooksPage() {
                   setSearch(event.target.value);
                   setPage(1);
                 }}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black outline-none focus:border-black"
+                className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 placeholder="Search title or author"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-emerald-900">
                 Status
               </label>
 
@@ -738,7 +749,7 @@ export default function BooksPage() {
                   setStatusFilter(event.target.value);
                   setPage(1);
                 }}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-black outline-none focus:border-black"
+                className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               >
                 <option value="">All statuses</option>
                 <option value="want_to_read">
@@ -750,7 +761,7 @@ export default function BooksPage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-emerald-900">
                 Sort By
               </label>
 
@@ -760,7 +771,7 @@ export default function BooksPage() {
                   setSortBy(event.target.value);
                   setPage(1);
                 }}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-black outline-none focus:border-black"
+                className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               >
                 <option value="added_at">Date Added</option>
                 <option value="title">Title</option>
@@ -770,23 +781,26 @@ export default function BooksPage() {
           </div>
         </div>
 
+        {/* Loading */}
         {loading && (
-          <div className="rounded-2xl bg-white p-8 text-center text-gray-600 shadow-sm">
+          <div className="rounded-2xl border border-emerald-100 bg-white p-8 text-center text-emerald-700 shadow-sm">
             Loading books...
           </div>
         )}
 
+        {/* Error */}
         {error && (
-          <div className="mb-6 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
             {error}
           </div>
         )}
 
         {!loading && !error && (
           <>
-            <div className="space-y-4">
+            {/* Books */}
+            <div className="grid gap-4 md:grid-cols-2">
               {books.length === 0 ? (
-                <div className="rounded-2xl bg-white p-8 text-center text-gray-600 shadow-sm">
+                <div className="rounded-2xl border border-emerald-100 bg-white p-8 text-center text-emerald-700 shadow-sm">
                   No books found.
                 </div>
               ) : (
@@ -797,20 +811,29 @@ export default function BooksPage() {
                   return (
                     <div
                       key={book.id}
-                      className="rounded-2xl bg-white p-6 shadow-sm"
+                      className="rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md"
                     >
+                      {/* Book Header */}
                       <div className="flex items-start justify-between gap-6">
                         <div>
-                          <h2 className="text-xl font-semibold text-gray-900">
+                          <h2 className="text-xl font-semibold text-emerald-950">
                             {book.title}
                           </h2>
 
-                          <p className="mt-1 text-gray-600">
+                          <p className="mt-1 text-emerald-800/70">
                             by {book.author}
                           </p>
                         </div>
 
-                        <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700">
+                        <span
+                          className={`rounded-full px-3 py-1 text-sm font-medium ${
+                            book.status === "want_to_read"
+                              ? "bg-amber-100 text-amber-700"
+                              : book.status === "reading"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-green-100 text-green-700"
+                          }`}
+                        >
                           {book.status === "want_to_read"
                             ? "Want to Read"
                             : book.status === "reading"
@@ -819,23 +842,24 @@ export default function BooksPage() {
                         </span>
                       </div>
 
-                      <div className="mt-5 grid gap-4 text-sm text-gray-600 md:grid-cols-3">
+                      {/* Book Information */}
+                      <div className="mt-5 grid gap-4 text-sm text-emerald-800/70 md:grid-cols-3">
                         <div>
-                          <span className="font-medium text-gray-900">
+                          <span className="font-medium text-emerald-950">
                             Pages:
                           </span>{" "}
                           {book.total_pages}
                         </div>
 
                         <div>
-                          <span className="font-medium text-gray-900">
+                          <span className="font-medium text-emerald-950">
                             Rating:
                           </span>{" "}
                           {book.rating ?? "Not rated"}
                         </div>
 
                         <div>
-                          <span className="font-medium text-gray-900">
+                          <span className="font-medium text-emerald-950">
                             Added:
                           </span>{" "}
                           {new Date(
@@ -844,18 +868,20 @@ export default function BooksPage() {
                         </div>
                       </div>
 
+                      {/* Notes */}
                       {book.notes && (
-                        <p className="mt-4 text-sm text-gray-600">
-                          <span className="font-medium text-gray-900">
+                        <p className="mt-4 text-sm text-emerald-800/70">
+                          <span className="font-medium text-emerald-950">
                             Notes:
                           </span>{" "}
                           {book.notes}
                         </p>
                       )}
 
+                      {/* Reading Progress */}
                       {book.status === "reading" && (
-                        <div className="mt-6 rounded-xl border border-gray-200 p-5">
-                          <h3 className="font-semibold text-gray-900">
+                        <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50/70 p-5">
+                          <h3 className="font-semibold text-emerald-950">
                             Reading Progress
                           </h3>
 
@@ -873,10 +899,10 @@ export default function BooksPage() {
                                   [book.id]: event.target.value,
                                 }))
                               }
-                              className="w-32 rounded-lg border border-gray-300 px-3 py-2 text-black outline-none focus:border-black"
+                              className="w-32 rounded-lg border border-emerald-200 bg-white px-3 py-2 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                             />
 
-                            <span className="text-sm text-gray-600">
+                            <span className="text-sm text-emerald-800/70">
                               / {book.total_pages} pages
                             </span>
 
@@ -888,7 +914,7 @@ export default function BooksPage() {
                               disabled={
                                 updatingProgress === book.id
                               }
-                              className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+                              className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               {updatingProgress === book.id
                                 ? "Updating..."
@@ -897,16 +923,17 @@ export default function BooksPage() {
                           </div>
 
                           <div className="mt-4">
-                            <div className="mb-2 flex justify-between text-sm text-gray-600">
+                            <div className="mb-2 flex justify-between text-sm text-emerald-800/70">
                               <span>Progress</span>
+
                               <span>
                                 {bookProgress?.percentage ?? 0}%
                               </span>
                             </div>
 
-                            <div className="h-2 overflow-hidden rounded-full bg-gray-200">
+                            <div className="h-2 overflow-hidden rounded-full bg-emerald-100">
                               <div
-                                className="h-full rounded-full bg-black transition-all"
+                                className="h-full rounded-full bg-emerald-600 transition-all"
                                 style={{
                                   width: `${bookProgress?.percentage ?? 0}%`,
                                 }}
@@ -916,14 +943,15 @@ export default function BooksPage() {
                         </div>
                       )}
 
-                      <div className="mt-5 rounded-xl border border-gray-200 p-5">
-                        <h3 className="font-semibold text-gray-900">
+                      {/* Lending */}
+                      <div className="mt-5 rounded-xl border border-lime-200 bg-lime-50/70 p-5">
+                        <h3 className="font-semibold text-emerald-950">
                           Lending
                         </h3>
 
                         {activeLending ? (
                           <div className="mt-3 flex flex-wrap items-center gap-3">
-                            <span className="text-sm text-gray-600">
+                            <span className="text-sm text-emerald-800/70">
                               Currently lent out
                             </span>
 
@@ -935,7 +963,7 @@ export default function BooksPage() {
                               disabled={
                                 returningBook === book.id
                               }
-                              className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+                              className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               {returningBook === book.id
                                 ? "Returning..."
@@ -956,7 +984,7 @@ export default function BooksPage() {
                                 }))
                               }
                               placeholder="Borrower's email"
-                              className="w-full max-w-sm rounded-lg border border-gray-300 px-4 py-2 text-black outline-none focus:border-black"
+                              className="w-full max-w-sm rounded-lg border border-emerald-200 bg-white px-4 py-2 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                             />
 
                             <button
@@ -967,7 +995,7 @@ export default function BooksPage() {
                               disabled={
                                 lendingBook === book.id
                               }
-                              className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+                              className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               {lendingBook === book.id
                                 ? "Lending..."
@@ -977,11 +1005,12 @@ export default function BooksPage() {
                         )}
                       </div>
 
+                      {/* Actions */}
                       <div className="mt-5 flex flex-wrap items-center gap-3">
                         <button
                           type="button"
                           onClick={() => openEditForm(book)}
-                          className="rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium text-white"
+                          className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-green-700"
                         >
                           Edit
                         </button>
@@ -994,7 +1023,7 @@ export default function BooksPage() {
                               [book.id]: event.target.value,
                             }))
                           }
-                          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-black outline-none focus:border-black"
+                          className="rounded-lg border border-emerald-200 bg-white px-4 py-2 text-sm text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                         >
                           <option value="">Select shelf</option>
 
@@ -1017,7 +1046,7 @@ export default function BooksPage() {
                             !selectedShelf[book.id] ||
                             addingToShelf === book.id
                           }
-                          className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+                          className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {addingToShelf === book.id
                             ? "Adding..."
@@ -1029,7 +1058,7 @@ export default function BooksPage() {
                           onClick={() =>
                             handleDeleteBook(book.id)
                           }
-                          className="rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-600"
+                          className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
                         >
                           Delete
                         </button>
@@ -1040,6 +1069,7 @@ export default function BooksPage() {
               )}
             </div>
 
+            {/* Pagination */}
             <div className="mt-6 flex items-center justify-between">
               <button
                 type="button"
@@ -1049,12 +1079,12 @@ export default function BooksPage() {
                   )
                 }
                 disabled={page === 1 || loading}
-                className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg border border-emerald-200 bg-white px-4 py-2 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Previous
               </button>
 
-              <span className="text-sm text-gray-600">
+              <span className="text-sm font-medium text-emerald-800">
                 Page {page}
               </span>
 
@@ -1066,7 +1096,7 @@ export default function BooksPage() {
                 disabled={
                   books.length < pageSize || loading
                 }
-                className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg border border-emerald-200 bg-white px-4 py-2 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Next
               </button>

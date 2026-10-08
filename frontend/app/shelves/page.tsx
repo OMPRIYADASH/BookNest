@@ -111,6 +111,13 @@ export default function ShelvesPage() {
     setEditingShelf(shelf);
     setShelfName(shelf.name);
     setShowForm(true);
+
+    setTimeout(() => {
+      document.getElementById("shelf-form")?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 100);
   }
 
   function closeForm() {
@@ -396,15 +403,15 @@ export default function ShelvesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-100 px-6 py-8">
-      <div className="mx-auto max-w-5xl">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-lime-50 px-6 py-8">
+      <div className="w-full">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-emerald-950">
               My Shelves
             </h1>
 
-            <p className="mt-1 text-gray-600">
+            <p className="mt-1 text-emerald-800/70">
               Organize your books into custom shelves
             </p>
           </div>
@@ -412,7 +419,7 @@ export default function ShelvesPage() {
           <button
             type="button"
             onClick={showForm ? closeForm : openAddForm}
-            className="rounded-lg bg-black px-5 py-3 text-sm font-medium text-white"
+            className="rounded-lg bg-emerald-600 px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700"
           >
             {showForm ? "Cancel" : "Create Shelf"}
           </button>
@@ -420,15 +427,16 @@ export default function ShelvesPage() {
 
         {showForm && (
           <form
+            id="shelf-form"
             onSubmit={handleSaveShelf}
-            className="mb-8 rounded-2xl bg-white p-6 shadow-sm"
+            className="mb-8 rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm"
           >
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-emerald-950">
               {editingShelf ? "Rename Shelf" : "Create Shelf"}
             </h2>
 
             <div className="mt-5">
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-emerald-900">
                 Shelf Name
               </label>
 
@@ -439,7 +447,7 @@ export default function ShelvesPage() {
                 required
                 minLength={1}
                 maxLength={100}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black outline-none focus:border-black"
+                className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-3 text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 placeholder="e.g. Favorites"
               />
             </div>
@@ -448,7 +456,7 @@ export default function ShelvesPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="rounded-lg bg-black px-5 py-3 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg bg-emerald-600 px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {saving
                   ? "Saving..."
@@ -460,7 +468,7 @@ export default function ShelvesPage() {
               <button
                 type="button"
                 onClick={closeForm}
-                className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-medium text-gray-700"
+                className="rounded-lg border border-emerald-200 bg-white px-5 py-3 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50"
               >
                 Cancel
               </button>
@@ -469,24 +477,24 @@ export default function ShelvesPage() {
         )}
 
         {error && (
-          <div className="mb-6 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
             {error}
           </div>
         )}
 
         {loading ? (
-          <div className="rounded-2xl bg-white p-8 text-center text-gray-600 shadow-sm">
+          <div className="rounded-2xl border border-emerald-100 bg-white/95 p-8 text-center text-emerald-700 shadow-sm">
             Loading shelves...
           </div>
         ) : (
           <>
             <section>
-              <h2 className="mb-4 text-2xl font-semibold text-gray-900">
+              <h2 className="mb-4 text-2xl font-semibold text-emerald-950">
                 My Shelves
               </h2>
 
               {shelves.length === 0 ? (
-                <div className="rounded-2xl bg-white p-8 text-center text-gray-600 shadow-sm">
+                <div className="rounded-2xl border border-emerald-100 bg-white/95 p-8 text-center text-emerald-700 shadow-sm">
                   No shelves yet.
                 </div>
               ) : (
@@ -494,13 +502,13 @@ export default function ShelvesPage() {
                   {shelves.map((shelf) => (
                     <div
                       key={shelf.id}
-                      className="rounded-2xl bg-white p-6 shadow-sm"
+                      className="rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md"
                     >
-                      <h3 className="text-xl font-semibold text-gray-900">
+                      <h3 className="text-xl font-semibold text-emerald-950">
                         {shelf.name}
                       </h3>
 
-                      <p className="mt-2 text-sm text-gray-500">
+                      <p className="mt-2 text-sm text-emerald-800/70">
                         Created{" "}
                         {new Date(
                           shelf.created_at
@@ -513,7 +521,7 @@ export default function ShelvesPage() {
                           onClick={() => {
                             window.location.href = `/shelves/${shelf.id}`;
                           }}
-                          className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white"
+                          className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700"
                         >
                           View Shelf
                         </button>
@@ -521,7 +529,7 @@ export default function ShelvesPage() {
                         <button
                           type="button"
                           onClick={() => openEditForm(shelf)}
-                          className="rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium text-white"
+                          className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-green-700"
                         >
                           Rename
                         </button>
@@ -529,14 +537,14 @@ export default function ShelvesPage() {
                         <button
                           type="button"
                           onClick={() => handleDeleteShelf(shelf.id)}
-                          className="rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-600"
+                          className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
                         >
                           Delete
                         </button>
                       </div>
 
-                      <div className="mt-6 border-t border-gray-200 pt-5">
-                        <h4 className="text-sm font-semibold text-gray-900">
+                      <div className="mt-6 border-t border-emerald-100 pt-5">
+                        <h4 className="text-sm font-semibold text-emerald-950">
                           Share Shelf
                         </h4>
 
@@ -551,7 +559,7 @@ export default function ShelvesPage() {
                               }))
                             }
                             placeholder="collaborator@test.com"
-                            className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-black outline-none focus:border-black"
+                            className="w-full rounded-lg border border-emerald-200 bg-white px-4 py-2 text-sm text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                           />
 
                           <div className="flex flex-wrap gap-3">
@@ -563,7 +571,7 @@ export default function ShelvesPage() {
                                   [shelf.id]: event.target.value,
                                 }))
                               }
-                              className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-black outline-none focus:border-black"
+                              className="rounded-lg border border-emerald-200 bg-white px-4 py-2 text-sm text-black outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                             >
                               <option value="viewer">
                                 Viewer
@@ -582,7 +590,7 @@ export default function ShelvesPage() {
                               disabled={
                                 sharingShelf === shelf.id
                               }
-                              className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+                              className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               {sharingShelf === shelf.id
                                 ? "Sharing..."
@@ -592,9 +600,9 @@ export default function ShelvesPage() {
                         </div>
                       </div>
 
-                      <div className="mt-6 border-t border-gray-200 pt-5">
+                      <div className="mt-6 border-t border-emerald-100 pt-5">
                         <div className="flex items-center justify-between">
-                          <h4 className="text-sm font-semibold text-gray-900">
+                          <h4 className="text-sm font-semibold text-emerald-950">
                             Manage Collaborators
                           </h4>
 
@@ -604,7 +612,7 @@ export default function ShelvesPage() {
                             disabled={
                               loadingShares === shelf.id
                             }
-                            className="text-sm font-medium text-gray-700 hover:text-black disabled:opacity-50"
+                            className="text-sm font-medium text-emerald-700 transition hover:text-emerald-950 disabled:opacity-50"
                           >
                             {loadingShares === shelf.id
                               ? "Loading..."
@@ -613,7 +621,7 @@ export default function ShelvesPage() {
                         </div>
 
                         {(shares[shelf.id] ?? []).length === 0 ? (
-                          <p className="mt-3 text-sm text-gray-500">
+                          <p className="mt-3 text-sm text-emerald-800/60">
                             No collaborators yet.
                           </p>
                         ) : (
@@ -622,15 +630,15 @@ export default function ShelvesPage() {
                               (share) => (
                                 <div
                                   key={share.id}
-                                  className="rounded-lg bg-gray-50 p-4"
+                                  className="rounded-lg border border-emerald-100 bg-emerald-50/60 p-4"
                                 >
                                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                     <div>
-                                      <p className="text-sm font-medium text-gray-900">
+                                      <p className="text-sm font-medium text-emerald-950">
                                         Collaborator #{share.user_id}
                                       </p>
 
-                                      <p className="mt-1 text-xs text-gray-500">
+                                      <p className="mt-1 text-xs text-emerald-800/60">
                                         Current role:{" "}
                                         {share.role === "editor"
                                           ? "Editor"
@@ -652,7 +660,7 @@ export default function ShelvesPage() {
                                           updatingShare ===
                                           share.id
                                         }
-                                        className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-black outline-none disabled:opacity-50"
+                                        className="rounded-lg border border-emerald-200 bg-white px-3 py-2 text-sm text-black outline-none focus:border-emerald-500 disabled:opacity-50"
                                       >
                                         <option value="viewer">
                                           Viewer
@@ -675,7 +683,7 @@ export default function ShelvesPage() {
                                           removingShare ===
                                           share.id
                                         }
-                                        className="rounded-lg border border-red-300 bg-white px-3 py-2 text-sm font-medium text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                                        className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
                                       >
                                         {removingShare ===
                                         share.id
@@ -697,12 +705,12 @@ export default function ShelvesPage() {
             </section>
 
             <section className="mt-10">
-              <h2 className="mb-4 text-2xl font-semibold text-gray-900">
+              <h2 className="mb-4 text-2xl font-semibold text-emerald-950">
                 Shared With Me
               </h2>
 
               {sharedShelves.length === 0 ? (
-                <div className="rounded-2xl bg-white p-8 text-center text-gray-600 shadow-sm">
+                <div className="rounded-2xl border border-emerald-100 bg-white/95 p-8 text-center text-emerald-700 shadow-sm">
                   No shelves have been shared with you.
                 </div>
               ) : (
@@ -710,13 +718,13 @@ export default function ShelvesPage() {
                   {sharedShelves.map((shelf) => (
                     <div
                       key={shelf.id}
-                      className="rounded-2xl bg-white p-6 shadow-sm"
+                      className="rounded-2xl border border-emerald-100 bg-white/95 p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md"
                     >
-                      <h3 className="text-xl font-semibold text-gray-900">
+                      <h3 className="text-xl font-semibold text-emerald-950">
                         {shelf.name}
                       </h3>
 
-                      <p className="mt-2 text-sm text-gray-500">
+                      <p className="mt-2 text-sm text-emerald-800/70">
                         Shared shelf
                       </p>
 
@@ -725,7 +733,7 @@ export default function ShelvesPage() {
                         onClick={() => {
                           window.location.href = `/shelves/${shelf.id}`;
                         }}
-                        className="mt-5 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white"
+                        className="mt-5 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700"
                       >
                         View Shelf
                       </button>
