@@ -1,43 +1,69 @@
 "use client";
 
 import { useState } from "react";
-import { loginUser } from "@/lib/api";
+import { signupUser } from "@/lib/api";
 
-export default function Home() {
+export default function SignupPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleLogin(event: React.FormEvent) {
+  async function handleSignup(event: React.FormEvent) {
     event.preventDefault();
 
     setError("");
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const data = await loginUser(email, password);
+      await signupUser(name, email, password);
 
-      localStorage.setItem("access_token", data.access_token);
-
-      window.location.href = "/dashboard";
+      window.location.href = "/";
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed.");
+      setError(
+        err instanceof Error ? err.message : "Signup failed."
+      );
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <main className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-900">BookNest</h1>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Create your account
+        </h1>
 
         <p className="mt-2 text-gray-500">
-          Your personal reading tracker
+          Join BookNest and start tracking your reading.
         </p>
 
-        <form onSubmit={handleLogin} className="mt-8 space-y-5">
+        <form onSubmit={handleSignup} className="mt-8 space-y-5">
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              Name
+            </label>
+
+            <input
+              type="text"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              required
+              minLength={2}
+              maxLength={100}
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black outline-none focus:border-black"
+              placeholder="Enter your name"
+            />
+          </div>
+
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
               Email
@@ -63,9 +89,15 @@ export default function Home() {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
+              minLength={8}
+              maxLength={128}
               className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black outline-none focus:border-black"
-              placeholder="Enter your password"
+              placeholder="At least 8 characters"
             />
+
+            <p className="mt-2 text-xs text-gray-500">
+              Password must contain at least 8 characters.
+            </p>
           </div>
 
           {error && (
@@ -79,18 +111,19 @@ export default function Home() {
             disabled={loading}
             className="w-full rounded-lg bg-black px-4 py-3 font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "Creating account..." : "Create account"}
           </button>
         </form>
+
         <p className="mt-6 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <a
-          href="/signup"
-          className="font-medium text-black hover:underline"
+            href="/"
+            className="font-medium text-black hover:underline"
           >
-          Create account
-        </a>
-      </p>
+            Sign in
+          </a>
+        </p>
       </div>
     </main>
   );
