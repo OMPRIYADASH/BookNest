@@ -1,75 +1,73 @@
-# BookNest
+# BookNest — Reading Tracker
 
-BookNest is a full-stack reading tracker application that helps users manage their personal book collection, organize books into custom shelves, track reading progress, share shelves with other users, and lend books.
+BookNest is a full-stack reading tracker application that helps users manage their personal book collections, organize books into custom shelves, track reading progress, share shelves with other users, and lend books to other readers. It combines book management, collaboration, and reading analytics in a single application.
+
+## Demo Video
+
+**[Watch the BookNest Demo on Loom](https://www.loom.com/share/2d9aa76feae54bbd8e7f72977bf0ab60)**
+
+The demo provides a walkthrough of the application's interface and key features.
 
 ## Features
 
-### Authentication & Security
-- User signup with name, email, and password validation
-- Password strength validation
-- Passwords securely hashed using bcrypt
-- JWT-based authentication
-- Short-lived access tokens
-- Refresh tokens for maintaining authenticated sessions
-- Protected backend endpoints
-- Backend authorization ensures users can access only their own books and resources unless sharing permissions allow access
-- Unauthenticated and invalid/expired token requests return HTTP 401
+### Authentication and Security
+- User registration with name, email, and password validation.
+- Password strength validation.
+- Secure password hashing using bcrypt.
+- JWT-based authentication with access and refresh tokens.
+- Protected backend endpoints.
+- Backend authorization for user-owned resources and shared resources.
+- HTTP 401 responses for unauthenticated or invalid authentication requests.
 
 ### Book Management
-- Add books with title, author, page count, status, rating, and notes
-- Edit book details
-- Delete books
-- Search books
-- Filter books by reading status
-- Sort books by date added, title, or rating
-- Pagination
-- Reading statuses:
+- Add, view, edit, and delete books.
+- Store book details, including title, author, page count, reading status, rating, and notes.
+- Search books by title or author.
+- Filter books by reading status.
+- Sort books by title, rating, or date added.
+- Paginate book listings.
+- Track books using three reading statuses:
   - Want to Read
   - Reading
   - Finished
 
 ### Reading Progress
-- Track the current page of a book
-- Automatically calculate reading percentage
-- Prevent progress from exceeding the total page count
-- Automatically mark a book as Finished when the final page is reached
+- Record the current page of a book.
+- Calculate reading progress as a percentage.
+- Validate page numbers against the total page count.
+- Automatically mark a book as Finished when the final page is reached.
 
 ### Custom Shelves
-- Create custom shelves
-- View shelf details
-- Add books to shelves
-- Remove books from shelves
-- Delete shelves
+- Create and manage custom shelves.
+- Add books to and remove books from shelves.
+- View books belonging to a shelf.
+- Organize books across multiple shelves.
+- Delete shelves without deleting the books they contain.
 
-### Shared Shelves
-- Share shelves with other registered users
-- Viewer permission for read-only access
-- Editor permission for modifying shared shelf contents
-- Change collaborator permissions
-- Remove collaborators
-- Backend authorization enforces shelf permissions
+### Shared Shelves and Permissions
+- Share shelves with registered users.
+- Assign Viewer or Editor permissions.
+- Allow viewers to access shared shelf contents without modifying them.
+- Allow editors to modify shared shelf contents.
+- Manage collaborators and their permissions.
+- Enforce shelf ownership and role-based permissions on the backend.
 
 ### Book Lending
-- Lend books to registered users using their email address
-- Prevent lending a book to yourself
-- Prevent lending a book that is already actively lent
-- View active borrowed books
-- Return lent books
-- Lending and return actions are recorded in the system
+- Lend books to registered users using their email addresses.
+- Prevent lending books to yourself.
+- Prevent a book from being lent again while it is already actively lent.
+- View borrowed books.
+- Record book returns and lending activity.
 
-### Dashboard
-The dashboard provides reading statistics including:
-- Total books
-- Want to Read count
-- Currently Reading count
-- Finished books
-- Books finished this year
-- Average rating
-- Currently lent books
-- Shared shelves
-- Shelf with the most books
+### Dashboard and Reading Statistics
+- View total books and reading-status counts.
+- Track books finished during the current year.
+- View average book ratings.
+- Monitor currently lent books.
+- View shared shelves.
+- Identify the shelf containing the most books.
 
-## Tech Stack
+## Technology Stack
 
 ### Frontend
 - Next.js
@@ -78,8 +76,8 @@ The dashboard provides reading statistics including:
 - Tailwind CSS
 
 ### Backend
-- FastAPI
 - Python
+- FastAPI
 - SQLAlchemy
 - Pydantic
 - JWT authentication
@@ -101,10 +99,8 @@ Booknest/
 │   │   ├── models/
 │   │   ├── schemas/
 │   │   └── services/
-│   ├── .env
 │   ├── requirements.txt
 │   └── ...
-│
 ├── frontend/
 │   ├── app/
 │   │   ├── books/
@@ -113,55 +109,53 @@ Booknest/
 │   │   └── signup/
 │   ├── lib/
 │   └── ...
-│
 ├── .gitignore
 └── README.md
 ```
 
-## Authentication Flow
+## Authentication and Security
 
-BookNest uses JWT authentication with access and refresh tokens.
+### JWT Authentication
 
-### Access Token
-The access token is short-lived and is used to authenticate API requests.
+BookNest uses JSON Web Tokens (JWT) to authenticate users and protect API endpoints.
 
-Default expiration:
+- **Access token:** Used to authenticate API requests and configured with a short expiration period.
+- **Refresh token:** Used to obtain a new access token after the current access token expires, subject to server-side validation.
 
-```text
-15 minutes
-```
+The configured token lifetimes are:
 
-### Refresh Token
-The refresh token has a longer lifetime and can be used to obtain a new access token after the access token expires.
+| Token | Configured Lifetime |
+|---|---|
+| Access token | 15 minutes |
+| Refresh token | 7 days |
 
-Default expiration:
-
-```text
-7 days
-```
+These values should match the backend configuration.
 
 ### Password Security
 
-User passwords are never stored as plain text. Passwords are hashed using bcrypt before being stored in the database.
+Passwords are hashed using bcrypt before being stored in the database. Plaintext passwords should never be stored.
 
 ### Authorization
 
-Authentication is enforced at the backend level. Protected endpoints require a valid access token.
+Authorization is enforced by the backend to protect user data and shared resources.
 
-The backend also checks resource ownership and sharing permissions before allowing operations.
+- Users can manage their own private books.
+- Shelf owners control their shelves and collaborators.
+- Viewers have read-only access to shared shelves.
+- Editors can modify shared shelf contents within their permissions.
+- Unauthorized users cannot perform restricted operations on another user's resources.
 
-For example:
-- Users can manage their own books.
-- Shelf owners can manage their shelves.
-- Shared shelf viewers have read-only access.
-- Shared shelf editors can modify shared shelf contents.
-- Users cannot access another user's private books.
+### Token Storage and Refresh
+
+The frontend and backend should follow the token storage and refresh strategy implemented in the application. When an access token expires, the client should refresh it and retry the original request if that behavior is implemented.
 
 ## API Overview
 
+The following routes illustrate the main API areas. Refer to the actual backend routes for the complete endpoint list and supported methods.
+
 ### Authentication
 
-```text
+```http
 POST /auth/signup
 POST /auth/login
 POST /auth/refresh
@@ -169,7 +163,7 @@ POST /auth/refresh
 
 ### Books
 
-```text
+```http
 POST   /books
 GET    /books
 PUT    /books/{book_id}
@@ -178,14 +172,14 @@ DELETE /books/{book_id}
 
 ### Reading Progress
 
-```text
+```http
 POST /books/{book_id}/progress
 GET  /books/{book_id}/progress
 ```
 
 ### Lending
 
-```text
+```http
 POST /books/{book_id}/lend
 POST /books/{book_id}/return
 GET  /books/borrowed
@@ -193,7 +187,7 @@ GET  /books/borrowed
 
 ### Shelves
 
-```text
+```http
 POST   /shelves
 GET    /shelves
 GET    /shelves/{shelf_id}
@@ -201,140 +195,127 @@ PUT    /shelves/{shelf_id}
 DELETE /shelves/{shelf_id}
 ```
 
-Additional endpoints are available for adding/removing books and managing shared shelf collaborators.
+Additional routes may be available for managing shelf contents, collaborators, shared shelves, and lending records.
 
-## Environment Variables
+For the exact routes and request schemas, use the FastAPI interactive documentation after starting the backend.
 
-Create a `.env` file inside the `backend` directory.
+## Environment Configuration
+
+Create a `.env` file inside the `backend` directory and configure the database connection and authentication settings.
 
 Example:
 
 ```env
 DATABASE_URL=postgresql+psycopg://username:password@localhost:5432/booknest
-JWT_SECRET_KEY=your-secret-key
+JWT_SECRET_KEY=replace-with-a-strong-secret
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=15
 REFRESH_TOKEN_EXPIRE_DAYS=7
 ```
 
-Use a strong secret key for production deployments.
+**Important:** These are example values. Use the environment variable names expected by your application, a valid database connection, and a strong secret key. Never commit real credentials or secret keys to GitHub.
 
-## Backend Setup
+## Getting Started
 
-From the project root:
+### Prerequisites
+
+Install the following before running the application:
+
+- Python 3.12
+- Node.js and npm
+- PostgreSQL
+- Git
+
+### 1. Clone the Repository
 
 ```powershell
-cd D:\Booknest\backend
+git clone https://github.com/OMPRIYADASH/BookNest.git
+cd BookNest
 ```
 
-Create and activate the virtual environment:
+### 2. Configure the Backend
+
+Open a terminal in the project root and run:
 
 ```powershell
+cd backend
 py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-```
-
-Install dependencies:
-
-```powershell
 pip install -r requirements.txt
 ```
 
-Start the backend:
+Create and configure the backend `.env` file with your PostgreSQL connection details and authentication settings.
+
+Make sure PostgreSQL is running and the configured database exists. Apply the project's database migrations or initialization procedure, if required.
+
+### 3. Start the Backend
+
+From the `backend` directory, run:
 
 ```powershell
 uvicorn app.main:app --reload
 ```
 
-The API will be available at:
+The backend will typically be available at:
 
-```text
 http://localhost:8000
-```
 
-FastAPI interactive documentation:
+FastAPI interactive API documentation:
 
-```text
 http://localhost:8000/docs
-```
 
-## Frontend Setup
+### 4. Configure and Start the Frontend
 
-Open another terminal:
-
-```powershell
-cd D:\Booknest\frontend
-```
-
-Install dependencies:
+Open a separate terminal and run:
 
 ```powershell
+cd frontend
 npm install
-```
-
-Start the development server:
-
-```powershell
 npm run dev
 ```
 
-The frontend will be available at:
+The frontend will typically be available at:
 
-```text
 http://localhost:3000
-```
 
-## Testing Completed
+Ensure the frontend's API base URL points to the running backend.
 
-The following functionality has been tested during development:
+## Testing and Validation
 
-- User signup and login
-- Protected API endpoints
-- Unauthenticated request returning HTTP 401
-- Invalid/expired access token returning HTTP 401
-- Book creation and management
-- Book search, filtering, sorting, and pagination
-- Custom shelf creation
-- Adding books to shelves
-- Shared shelves
-- Viewer and Editor permissions
-- Collaborator removal
-- Reading progress updates
-- Automatic completion when reaching the final page
-- Lending books to another registered user
-- Preventing self-lending
-- Preventing duplicate active lending
-- Returning lent books
-- Viewing borrowed books
+The application is designed to support validation of the following areas:
+
+- User registration and authentication.
+- Protected API access and token validation.
+- Book creation and management.
+- Search, filtering, sorting, and pagination.
+- Custom shelf management.
+- Shared shelf access and permissions.
+- Reading progress validation and completion.
+- Lending, borrowing, and book returns.
+- Backend authorization and resource ownership.
+
+The actual results depend on the implemented functionality and tests executed against the current version.
 
 ## Example Reading Progress
 
-A book with 100 pages can be updated from:
+For a book containing 100 pages:
 
-```text
-50 / 100 pages → 50%
-```
+| Current Page | Total Pages | Progress |
+|---:|---:|---:|
+| 50 | 100 | 50% |
+| 75 | 100 | 75% |
+| 100 | 100 | 100% |
 
-to:
+When the final page is reached, the book can be marked as Finished according to the application's reading-progress logic.
 
-```text
-75 / 100 pages → 75%
-```
+## Project Objective
 
-When the reader reaches:
+BookNest demonstrates full-stack application development through authentication, REST API design, relational data modeling, CRUD operations, role-based access control, reading-progress tracking, and collaboration.
 
-```text
-100 / 100 pages → 100%
-```
+The goal is to provide a practical and user-friendly platform for organizing personal reading activities while protecting user data and managing shared resources securely.
 
-the book is automatically marked as:
+## Repository
 
-```text
-Finished
-```
+**GitHub:** [OMPRIYADASH/BookNest](https://github.com/OMPRIYADASH/BookNest)
 
-## Project Goal
-
-BookNest demonstrates a complete full-stack application with authentication, authorization, CRUD operations, relational database design, reading tracking, collaboration, and lending functionality.
-
-The project focuses on building a practical and secure reading management experience while keeping the interface simple and easy to use.
+**Demo:** [Watch BookNest on Loom](https://www.loom.com/share/2d9aa76feae54bbd8e7f72977bf0ab60)
